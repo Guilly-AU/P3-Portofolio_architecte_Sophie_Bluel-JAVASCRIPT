@@ -30,6 +30,20 @@ function createArticle(result) {
         sectionArticle.append(articleElement);
     }
 }
+// Filter button creation
+const filters = document.querySelector(".filters");
 
+function createButton(text, className) {
+    const button = document.createElement("button");
+    button.type = 'button';
+    button.textContent = text;
+    button.id = className;
+    filters.appendChild(button);
+}
+// Call of the function to create the filter buttons
+createButton('Tous', 'btn-tous');
+createButton('Objets', 'btn-objets');
+createButton('Appartements', 'btn-appartements');
+createButton(`Hôtels & restaurants`, 'btn-hotels');
 
 getAllWorks();
