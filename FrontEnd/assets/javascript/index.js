@@ -1,26 +1,23 @@
 // Recovery of all jobs
-function getAllWorks() {
-    fetch("http://localhost:5678/api/works")
-        .then(res => {
-            if (res.ok) {
-                res.json().then(result => {
-                    createArticle(result);
-                    filtersAll(result);
-                    filterObjets(result);
-                    filterApartments(result);
-                    filterHotels(result);
-                    console.log(result);
-                });
-            }
-            
-        }); 
-}
+fetch("http://localhost:5678/api/works")
+    .then((res) => res.json())
+    .then((result) => {
+                createArticle(result);
+                filtersAll(result);
+                filterObjets(result);
+                filterApartments(result);
+                filterHotels(result);
+                console.table(result);
+    })
+    .catch((err) => {
+        document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
+        console.log("error 404, api not responding:" + err);
+    });      
 // Creation of article
 function createArticle(result) {
     let sectionArticle = document.querySelector(".gallery");
-    // For loop
-    for (let i = 0; i < result.length; i++) {
-        let article = result[i];
+    // Loop through each element
+    result.forEach(article => {
         // Retrieval of the DOM element that will host the article
         let articleElement = document.createElement("figure");
         articleElement.dataset.id = article.id;
@@ -32,7 +29,7 @@ function createArticle(result) {
         articleElement.append(imageElement);
         articleElement.append(nomElement);
         sectionArticle.append(articleElement);
-    }
+    });
 }
 // Filter button creation
 const filters = document.querySelector(".filters");
@@ -89,4 +86,3 @@ function filterHotels(result) {
     });
 };
 
-getAllWorks();
