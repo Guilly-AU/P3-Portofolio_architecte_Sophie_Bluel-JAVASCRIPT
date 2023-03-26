@@ -98,6 +98,16 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	color: #B1663C;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -178,6 +188,11 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
+}
+
+input[type="submit"]:hover{
+	background-color: #0e2f28;
 }
 
 footer nav ul {
@@ -185,6 +200,8 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+
+/* CSS filters */
 
 .filters {
 	margin:30px;
@@ -201,6 +218,7 @@ footer nav ul {
 	background-color: white;
 	margin: 0px 5px;
 	min-width: 8%;
+	font-family: 'Syne';
 }
 
 .filters button:hover {
