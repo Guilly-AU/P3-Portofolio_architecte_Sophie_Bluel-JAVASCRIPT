@@ -34,8 +34,19 @@ document.querySelector('#btn-login').onclick = (e) => {
   })
     .then((res) => res.json())
     .then((loggedInUser) => {
-      
+      validateUser(loggedInUser);
       console.log(loggedInUser);
   });
 }
 
+function validateUser(loggedInUser) {
+  const userId = loggedInUser?.userId;
+  if (userId !=null) {
+    localStorage.setItem('token', loggedInUser.token);
+    
+    alert('Bienvenue');
+  } else {
+    document.getElementById('error').innerHTML = "Erreur dans l'identifiant ou le mot de passe";
+  }
+  console.log(userId);
+}
