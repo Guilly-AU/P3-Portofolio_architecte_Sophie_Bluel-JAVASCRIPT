@@ -25,12 +25,13 @@
 <main>
 	<section id="login">
 		<h2>Log in</h2>
+		<p style="color: red;" id="error"></p>
 		<form action="#" method="post">
 			<label for="email">E-mail</label>
-			<input type="email" name="email" id="email">
+			<input type="email" name="email" id="email" required>
 			<label for="password">Password</label>
-			<input type="password" name="name" id="name">
-			<input type="submit" value="Se connecter" id=btn-login>
+			<input type="password" name="password" id="password" required>
+			<input type="submit" value="Se connecter" id="btn-login">
 		</form>
 		<p><a href="">Mot de passe oublié</a></p>
 	</section>
