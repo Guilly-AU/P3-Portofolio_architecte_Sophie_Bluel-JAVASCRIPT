@@ -15,17 +15,6 @@ if (token) {
      
 }
 
-function editPhoto() {
-    let editPhoto = document.querySelector("#edit-photo");
-    let icon = document.createElement("i");
-    icon.classList.add("fa-regular", "fa-pen-to-square");
-    let link = document.createElement("a");
-    link.setAttribute('href', '#');
-    link.textContent = 'modifier';
-    editPhoto.append(icon);
-    editPhoto.append(link);
-}
-
 function getAllWork() {
     fetch("http://localhost:5678/api/works")
         .then((res) => res.json())
@@ -130,6 +119,17 @@ function modaleLink() {
     link.textContent = 'modifier';
     modaleLink.append(icon);
     modaleLink.append(link);
+}
+
+function editPhoto() {
+    let editPhoto = document.querySelector("#edit-photo");
+    let icon = document.createElement("i");
+    icon.classList.add("fa-regular", "fa-pen-to-square");
+    let link = document.createElement("a");
+    link.setAttribute('href', '#');
+    link.textContent = 'modifier';
+    editPhoto.append(icon);
+    editPhoto.append(link);
 }
 
     createButton('Tous', 'btn-all');
