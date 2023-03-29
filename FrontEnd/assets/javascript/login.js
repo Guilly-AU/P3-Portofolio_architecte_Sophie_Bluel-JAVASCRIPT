@@ -1,9 +1,9 @@
 document.querySelector('#btn-login').onclick = (e) => {
   e.preventDefault();
-  let emailAddress = document.getElementById('email').value;
-  let password = document.getElementById('password').value;
+  const emailAddress = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
   let error;
-  let user = {
+  const user = {
     email: emailAddress,
     password: password
     };
@@ -15,14 +15,8 @@ document.querySelector('#btn-login').onclick = (e) => {
     error = "Veuillez renseigner un email";
   }
   if (error) {
-    e.preventDefault();
     document.getElementById('error').innerHTML = error;
     return false;
-  } else {
-    console.log(emailAddress);
-    console.log(password);
-    console.log(user);
-    const json = JSON.stringify(user);
   }
    
   fetch("http://localhost:5678/api/users/login", {
@@ -49,4 +43,3 @@ function validateUser(loggedInUser) {
   }
   console.log(userId);
 }
-console.log(token);

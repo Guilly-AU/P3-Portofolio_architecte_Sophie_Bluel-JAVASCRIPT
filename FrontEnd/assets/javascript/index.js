@@ -1,24 +1,51 @@
-// Recovery of all jobs
-fetch("http://localhost:5678/api/works")
-    .then((res) => res.json())
-    .then((result) => {
+const token = localStorage.getItem('token');
+const filters = document.querySelector(".filters");
+const login = document.getElementById("login");
+
+if (token) {
+    login.innerHTML = "logout";
+    login.addEventListener("click", function() {
+        localStorage.removeItem("token");
+        login.setAttribute("href", "index.html");
+    });
+    blackBar();
+    editPhoto();
+    modaleLink();
+} else {
+     
+}
+
+function editPhoto() {
+    let editPhoto = document.querySelector("#edit-photo");
+    let icon = document.createElement("i");
+    icon.classList.add("fa-regular", "fa-pen-to-square");
+    let link = document.createElement("a");
+    link.setAttribute('href', '#');
+    link.textContent = 'modifier';
+    editPhoto.append(icon);
+    editPhoto.append(link);
+}
+
+function getAllWork() {
+    fetch("http://localhost:5678/api/works")
+        .then((res) => res.json())
+        .then((result) => {
                 createArticle(result);
                 filtersAll(result);
                 filterObjets(result);
                 filterApartments(result);
                 filterHotels(result);
                 console.table(result);
-    })
-    .catch((err) => {
-        document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
-        console.log("error 404, api not responding:" + err);
-    });      
-// Creation of article
+        })
+        .catch((err) => {
+            document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
+            console.log("error 404, api not responding:" + err);
+        });
+}      
+
 function createArticle(result) {
     let sectionArticle = document.querySelector(".gallery");
-    // Loop through each element
     result.forEach(article => {
-        // Retrieval of the DOM element that will host the article
         let articleElement = document.createElement("figure");
         articleElement.dataset.id = article.id;
         let imageElement = document.createElement("img");
@@ -31,8 +58,6 @@ function createArticle(result) {
         sectionArticle.append(articleElement);
     });
 }
-// Filter button creation
-const filters = document.querySelector(".filters");
 
 function createButton(text, className) {
     const button = document.createElement("button");
@@ -41,34 +66,26 @@ function createButton(text, className) {
     button.id = className;
     filters.appendChild(button);
 }
-// Call of the function to create the filter buttons
-createButton('Tous', 'btn-all');
-createButton('Objets', 'btn-objects');
-createButton('Appartements', 'btn-apartments');
-createButton(`Hôtels & restaurants`, 'btn-hotels');
 
 function filtersAll(result) {
-
     const buttonAll = document.querySelector('#btn-all');
     buttonAll.addEventListener('click', function () {
         const allObjects = result.filter(obj => obj.categoryId != null);
         document.querySelector('.gallery').innerHTML = '';
         createArticle(allObjects);
     })
-}
-// Creation des filtres
-function filterObjets(result) {
+};
 
+function filterObjets(result) {
     const buttonObjects = document.querySelector('#btn-objects');
     buttonObjects.addEventListener('click', function () {
         const filteredObjects = result.filter(obj => obj.categoryId === 1);
         document.querySelector('.gallery').innerHTML = '';
         createArticle(filteredObjects);
     });
-
 };
-function filterApartments(result) {
 
+function filterApartments(result) {
     const buttonApartments = document.querySelector('#btn-apartments');
     buttonApartments.addEventListener('click', function () {
         const filteredApartments = result.filter(obj => obj.categoryId === 2);
@@ -76,8 +93,8 @@ function filterApartments(result) {
         createArticle(filteredApartments);
     });
 };
-function filterHotels(result) {
-    
+
+function filterHotels(result) {   
     const buttonHotels = document.querySelector('#btn-hotels');
     buttonHotels.addEventListener('click', function () {
         const filteredHotels = result.filter(obj => obj.categoryId === 3);
@@ -86,3 +103,38 @@ function filterHotels(result) {
     });
 };
 
+function blackBar() {
+    let blackBar = document.querySelector("header");
+    let sectionMode = document.createElement("div");
+    sectionMode.setAttribute("id", "edition-mode");
+    let icon = document.createElement("i");
+    icon.classList.add("fa-regular", "fa-pen-to-square");
+    let h3 = document.createElement("h3");
+    h3.innerHTML = "Mode édition";
+    let link = document.createElement("a");
+    link.setAttribute('href', '#');
+    link.textContent = 'publier les changements';
+
+    blackBar.parentNode.insertBefore(sectionMode, blackBar);
+    sectionMode.append(icon);
+    sectionMode.append(h3);
+    sectionMode.append(link);
+};
+
+function modaleLink() {
+    let modaleLink = document.querySelector("#modal-link");
+    let icon = document.createElement("i");
+    icon.classList.add("fa-regular", "fa-pen-to-square");
+    let link = document.createElement("a");
+    link.setAttribute('href', '#');
+    link.textContent = 'modifier';
+    modaleLink.append(icon);
+    modaleLink.append(link);
+}
+
+    createButton('Tous', 'btn-all');
+    createButton('Objets', 'btn-objects');
+    createButton('Appartements', 'btn-apartments');
+    createButton(`Hôtels & restaurants`, 'btn-hotels');
+    getAllWork();
+  
