@@ -2,35 +2,38 @@ const token = localStorage.getItem('token');
 const filters = document.querySelector(".filters");
 const login = document.getElementById("login");
 
-if (token) {
-    login.innerHTML = "logout";
-    login.addEventListener("click", function() {
-        localStorage.removeItem("token");
-        login.setAttribute("href", "index.html");
-    });
-    blackBar();
-    editPhoto();
-    modaleLink();
-} else {
-     
-}
-
-function getAllWork() {
-    fetch("http://localhost:5678/api/works")
-        .then((res) => res.json())
-        .then((result) => {
-                createArticle(result);
-                filtersAll(result);
-                filterObjets(result);
-                filterApartments(result);
-                filterHotels(result);
-                console.table(result);
-        })
-        .catch((err) => {
-            document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
-            console.log("error 404, api not responding:" + err);
+fetch("http://localhost:5678/api/works")
+.then((res) => res.json())
+.then((result) => {
+    if (token) {
+        login.innerHTML = "logout";
+        login.addEventListener("click", function() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            login.setAttribute("href", "index.html");
         });
-}      
+        createArticle(result);
+        blackBar();
+        editPhoto();
+        modaleLink();
+    } else {
+        createArticle(result);
+        createButton('Tous', 'btn-all');
+        createButton('Objets', 'btn-objects');
+        createButton('Appartements', 'btn-apartments');
+        createButton(`Hôtels & restaurants`, 'btn-hotels');
+        filtersAll(result);
+        filterObjets(result);
+        filterApartments(result);
+        filterHotels(result);
+        console.table(result);
+    }
+})
+.catch((err) => {
+    document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
+    console.log("error 404, api not responding:" + err);
+});
+    
 
 function createArticle(result) {
     let sectionArticle = document.querySelector(".gallery");
@@ -131,10 +134,3 @@ function editPhoto() {
     editPhoto.append(icon);
     editPhoto.append(link);
 }
-
-    createButton('Tous', 'btn-all');
-    createButton('Objets', 'btn-objects');
-    createButton('Appartements', 'btn-apartments');
-    createButton(`Hôtels & restaurants`, 'btn-hotels');
-    getAllWork();
-  
