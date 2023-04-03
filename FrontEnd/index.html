@@ -37,7 +37,13 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2 id="modal-link">Mes Projets</h2>
+		<div class="link-wrapper">
+			<h2>Mes Projets</h2>
+			<div class="modal-link" style="display: none">
+				<i class="fa-regular fa-pen-to-square"></i>
+				<a href="#modal1" class="js-modal">modifier</a>
+			</div>
+		</div>
 		<div class="filters">	
 		</div>
 		<div class="gallery">	
@@ -56,6 +62,18 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+	<asside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display:none;">
+		<div class="modal-wrapper js-modal-stop">
+			<button class="js-modal-close">Fermer la boite modale</button>
+			<h3 id="titlemodal">Galerie photo</h3>
+			<div class="edit-gallery">
+
+			</div>
+			<input type="submit" id="btn-addphoto" value = 'Ajouter une photo'>
+			<p><a id = "btn-delet" href = '#'>Supprimer la gallery</a> </p>
+
+		</div>
+	</asside>
 </main>
 
 <footer>
@@ -66,5 +84,6 @@
 	</nav>
 </footer>
 <script rel="module" src="./assets/javascript/index.js"></script>
+<script rel="module" src="./assets/javascript/modal.js"></script>
 </body>
 </html>

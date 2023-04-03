@@ -114,14 +114,8 @@ function blackBar() {
 };
 
 function modaleLink() {
-    let modaleLink = document.querySelector("#modal-link");
-    let icon = document.createElement("i");
-    icon.classList.add("fa-regular", "fa-pen-to-square");
-    let link = document.createElement("a");
-    link.setAttribute('href', '#');
-    link.textContent = 'modifier';
-    modaleLink.append(icon);
-    modaleLink.append(link);
+    const target = document.querySelector(".modal-link");
+    target.style.display = 'block';
 }
 
 function editPhoto() {
