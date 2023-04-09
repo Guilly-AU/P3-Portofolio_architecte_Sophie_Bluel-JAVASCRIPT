@@ -152,27 +152,27 @@ a:hover {
 	width: 50%;
 	margin: auto;
 }
-#login > *, #contact > * {
+#login > *, #contact > *, .container>* {
 	text-align: center;
 
 }
 #login h2, #contact h2{
 	margin-bottom: 20px;
 }
-#login form, #contact form {
+#login form, #contact form, .container form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#login input, #contact input {
+#login input, #contact input, .container input, .container select {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#login label, #contact label {
+#login label, #contact label, .container label {
 	margin: 2em 0 1em 0;
 }
 #login textarea, #contact textarea {
@@ -327,11 +327,11 @@ footer nav ul {
 	margin: 40px 0px;
 }
 
-#btn-delete {
+.btn-delete-all {
 	font-family: 'Syne';	
 }
 
-#btn-addphoto {
+.btn-add-photo, .btn-valid {
 	width: 240px;
 	color: white;
 	background-color: #1D6154;
@@ -341,7 +341,7 @@ footer nav ul {
 	cursor: pointer;
 }
 
-.edit-gallery {
+.container {
 	padding-bottom: 50px;
 	width: 80%;
 	display: grid;
@@ -351,7 +351,7 @@ footer nav ul {
 	border-bottom: 2px solid lightgrey;
 }
 
-.edit-gallery img {
+.container img {
 	width: 100%;
 }
 
@@ -385,7 +385,6 @@ footer nav ul {
 .nav-modal {
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
 }
 
 .modal-close, .modal-return {
@@ -398,3 +397,53 @@ footer nav ul {
 	font-size: 24px;
 	justify-content: end;
 }
+
+.upload-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #e8f1f7;
+}
+
+.upload-container i {
+	font-size: 50px;
+	margin: 25px 0px;
+	opacity: 60%;
+	color: grey;
+}
+
+.upload-container p {
+	margin: 15px 0px;
+}
+
+.upload-image {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+  }
+
+.upload-image input[type=file] {
+	left: 0;
+	top: 0;
+	opacity: 0;
+	position: absolute;
+	font-size: 90px;
+  }
+
+.btn-upload {
+	background-color: #cbd6dc;
+	border: none;
+	color: #306685;
+	border-radius: 60px;
+	font-size: 14px;
+	font-family: 'Syne';
+	font-weight: 700;
+	width: 180px;
+	padding: 10px 0px;
+	cursor: pointer;
+  }
+
+  .upload-container img {
+	height: 180px;
+	object-fit: contain;
+  }

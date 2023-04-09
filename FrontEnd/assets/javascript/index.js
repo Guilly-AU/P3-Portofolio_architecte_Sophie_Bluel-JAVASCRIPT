@@ -16,7 +16,7 @@ fetch("http://localhost:5678/api/works")
         blackBar();
         editPhoto();
         modaleLink();
-        createGalerieModal(result)
+        createGalerieWork(result);
     } else {
         createArticle(result);
         createButton('Tous', 'btn-all');

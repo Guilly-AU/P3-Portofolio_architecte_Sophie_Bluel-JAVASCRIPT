@@ -1,79 +1,60 @@
-let modal = null
+let modalLink = document.querySelector('.js-modal')
+let modal = document.querySelector('.modal')
+let navModal = document.querySelector('.nav-modal')
 let titleModal = document.querySelector('#title-modal')
+let container = document.querySelector('.container')
 let btnReturn = document.querySelector('.modal-return')
 let btnClose = document.querySelector('.modal-close')
-let navModal = document.querySelector('.nav-modal')
-// const focusableSelector = 'button, a, input'
-// let focusables = []
+let btnAddPhoto = document.querySelector('.btn-add-photo')
+let btnValid = document.querySelector('.btn-valid')
+let btnDeleteAll = document.querySelector('.btn-delete-all')
 
-
-const openModal = function (e) {
-    e.preventDefault()
-    modal = document.querySelector(e.target.getAttribute('href'))
-    // focusables = Array.from(modal.querySelectorAll(focusableSelector))
-    // focusables[0].focus()
+modalLink.onclick = function () {
     modal.style.display = null
-    // modal.removeAttribute('aria-hidden')
-    // modal.setAttribute('aria-modal', 'true')
-    modal.addEventListener('click', closeModal)
-    modal.querySelector('.modal-close').addEventListener('click', closeModal)
-    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
-
 }
 
-
-const closeModal = function (e) {
-    if(modal === null) return
-    e.preventDefault()
-    modal.style.display = 'none'
-    // modal.setAttribute('aria-hidden', 'true')
-    // modal.removeAttribute('aria-modal')
-    modal.removeEventListener('click', closeModal)
-    modal.querySelector('.modal-close').removeEventListener('click', closeModal)
-    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
-    modal = null
+btnClose.onclick = function () {
+    modal.style.display = "none"
 }
 
-const stopPropagation = function (e) {
-    e.stopPropagation()
+btnAddPhoto.onclick = function () {
+    createAddPhotoModal()
 }
 
-// const focusInModal = function (e) {
-//     e.preventDefault()
-//     let index = focusables.findIndex(f => f === modal.querySelector(':focus'))
-//     if (e.shiftKey === true) {
-//         index--
-//     } else {
-//         index++
-//     }
-//     if (index >= focusables.length) {
-//         index = 0
-//     }
-//     if (index < 0) {
-//         index = focusables.lenght -1
-//     }
-//     focusables[index].focus()
-// }
+window.onclick = function (e) {
+    if (e.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
-document.querySelector('.js-modal').addEventListener('click', openModal);
-    
+btnReturn.onclick = function () {
+    fetch("http://localhost:5678/api/works")
+        .then((res) => res.json())
+        .then((result) => {
+            container.innerHTML = ""
+            createGalerieWork(result)
+        })
+}
+
 window.addEventListener('keydown', function (e) {
     if (e.key === "Escape" || e.key === "Esc")  {
-        closeModal(e)
+        modal.style.display = "none"
     }
-    // if (e.key === 'Tab' && modal !== null) {
-    //     focusInModal(e)
-    // }
 })
 
-function createGalerieModal(result) {
-
-    let sectionArticle = document.querySelector(".edit-gallery");
-    
+function createGalerieModal() {
+    container.style.display = 'grid';
     titleModal.textContent = 'Galerie photo';
+    btnAddPhoto.value = 'Ajouter photo';
+    btnValid.style.display ='none';
     btnReturn.style.display = 'none';
-    navModal.style.justifyContent = 'end';
+    navModal.style.justifyContent = 'end'
+    btnDeleteAll.style.display = 'block';
+    btnAddPhoto.style.display = 'block'    
+}
 
+function createGalerieWork(result) {
+    createGalerieModal ()
     result.forEach(article => {
         let articleElement = document.createElement("figure");
         articleElement.setAttribute("class", "works");
@@ -100,21 +81,86 @@ function createGalerieModal(result) {
         });
 
         btnDelete.addEventListener('click', () => {
-            // deleteWork() {}
+            deleteWork(article.id);            
         })
-
-
 
         articleElement.append(flexButton);
         flexButton.append(btnExtend)
         flexButton.append(btnDelete)
         articleElement.append(imageElement);
         articleElement.append(editElement);
-        sectionArticle.append(articleElement);
+        container.append(articleElement);
+        });
+}
+
+function deleteWork(id) {
+    fetch(`http://localhost:5678/api/works/${id}`, {
+        method: 'delete',
+        headers: {
+            Authorization: `bearer ${localStorage.token}`,
+        },
+    })
+    .then(response => {
+        if(response.ok) {
+            alert('suprimer');
+        } else {
+            alert(`erreur: ${response.status}`);
+        }
+    })
+    .catch(error => {
+        alert(`erreur lors de la suppression: ${error}`);
     });
 }
 
-function deleteWork () {
-    fetch('http://localhost:5678/api/works/1')
+function createAddPhotoModal() {
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    titleModal.textContent = 'Ajout Photo';
+    btnReturn.style.display = 'block';
+    btnDeleteAll.style.display = 'none';
+    btnValid.style.display = 'block'
+    btnAddPhoto.style.display = 'none'
+    navModal.style.justifyContent = 'space-between';
+    container.innerHTML = `
+    <form action="#" method="post">
+    <div class="upload-container">
+        <i class="fa-regular fa-image"></i>
+    <div class="upload-image">
+      <button class="btn-upload">+ Ajouter photo</button>
+      <input type="file" name="upfile" id="upload-photo" onchange="displayPhoto()"/>
+    </div>
+        <p>jpg, png: 4mo max</p>
+    </div>
+    <label for="title" name="title">Titre</label>
+    <input type="text" name="title" id="title">
+    <label for="category">Catégorie</label>
+    <select name="category" id="category">
+        <option value =""></option>
+        <option id="choice1" value="choice1">Objets</option>
+		<option id="choice2" value="choice2">Appartements</option>
+        <option id="choice3" value="choice3">Hotels & restaurants</option>
+    </form>`; 
+}
+
+function displayPhoto () {
+    const file = document.querySelector('#upload-photo').files[0];
+    const photoPreview = document.querySelector('.upload-container')
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = document.createElement('img');
+            img.src = event.currentTarget.result;
+            photoPreview.innerHTML = "";
+            photoPreview.append(img);
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+function createCategory () {
+}
+
+function addWork () {
     
 }
