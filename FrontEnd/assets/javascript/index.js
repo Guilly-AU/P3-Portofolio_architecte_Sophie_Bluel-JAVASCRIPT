@@ -1,25 +1,30 @@
-// var works = [];
+// Get the token from the local Storage
 const token = localStorage.getItem("token");
 const filters = document.querySelector(".filters");
 const btnLogin = document.getElementById("login");
 
+// Fetch the works from the API
 fetch("http://localhost:5678/api/works")
   .then((res) => res.json())
   .then((result) => {
     works = result;
+    // If there is a token, enable different function for the user
     if (token) {
+      // Logout function to remove the token
       btnLogin.innerHTML = "logout";
       btnLogin.addEventListener("click", function () {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         btnLogin.setAttribute("href", "index.html");
       });
+      // Call the function to create the articles, add the blackBar, allow the user to modify the gallery
       createArticle(result);
       blackBar();
       editPhoto();
       modaleLink();
       createGalerieWork();
     } else {
+      // If their is no token, only display the filters and the gallery
       createArticle(result);
       createButton("Tous", "btn-all");
       createButton("Objets", "btn-objects");
@@ -37,6 +42,7 @@ fetch("http://localhost:5678/api/works")
     console.log("error 404, api not responding:" + err);
   });
 
+// Function to create an article element and display to the Gallery
 function createArticle(result) {
   let sectionArticle = document.querySelector(".gallery");
   result.forEach((article) => {
@@ -53,6 +59,7 @@ function createArticle(result) {
   });
 }
 
+// Function to create a filter button
 function createButton(text, className) {
   const button = document.createElement("button");
   button.type = "button";
@@ -61,6 +68,7 @@ function createButton(text, className) {
   filters.appendChild(button);
 }
 
+// Function to create a filter to display all category
 function filtersAll(result) {
   const buttonAll = document.querySelector("#btn-all");
   buttonAll.addEventListener("click", function () {
@@ -70,6 +78,7 @@ function filtersAll(result) {
   });
 }
 
+// Function to create a filter to display all Object
 function filterObjets(result) {
   const buttonObjects = document.querySelector("#btn-objects");
   buttonObjects.addEventListener("click", function () {
@@ -79,6 +88,7 @@ function filterObjets(result) {
   });
 }
 
+// Function to create a filter to display all Apartments
 function filterApartments(result) {
   const buttonApartments = document.querySelector("#btn-apartments");
   buttonApartments.addEventListener("click", function () {
@@ -88,6 +98,7 @@ function filterApartments(result) {
   });
 }
 
+// Function to create a filter to display all Hotels
 function filterHotels(result) {
   const buttonHotels = document.querySelector("#btn-hotels");
   buttonHotels.addEventListener("click", function () {
@@ -97,6 +108,7 @@ function filterHotels(result) {
   });
 }
 
+// Function to create a black bar for edition mode
 function blackBar() {
   let blackBar = document.querySelector("header");
   let sectionMode = document.createElement("div");
@@ -115,11 +127,13 @@ function blackBar() {
   sectionMode.append(link);
 }
 
+// Function for display the modal link
 function modaleLink() {
   const target = document.querySelector(".modal-link");
   target.style.display = "block";
 }
 
+// Function for edit the user photo
 function editPhoto() {
   let editPhoto = document.querySelector("#edit-photo");
   let icon = document.createElement("i");

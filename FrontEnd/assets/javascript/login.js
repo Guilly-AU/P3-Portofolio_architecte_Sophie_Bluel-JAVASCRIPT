@@ -1,7 +1,10 @@
 document.querySelector("#btn-login").onclick = (e) => {
   e.preventDefault();
 
+  // Get the error display message
   const error = document.querySelector("#error");
+
+  // Get the informations of the user and create a user object
   const emailAddress = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
   const user = {
@@ -9,16 +12,20 @@ document.querySelector("#btn-login").onclick = (e) => {
     password: password,
   };
 
+  // Check the validity of email and password
   const emailCheck = document.getElementById("email");
   const passwordCheck = document.getElementById("password");
   passwordCheck.reportValidity();
   emailCheck.reportValidity();
 
+  // If either the email or password is invalid return false
   if (
     emailCheck.checkValidity() === false ||
     passwordCheck.checkValidity() === false
   ) {
     return;
+
+    // If both email and password are valid send a POST
   } else {
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
@@ -27,6 +34,7 @@ document.querySelector("#btn-login").onclick = (e) => {
       },
       body: JSON.stringify(user),
     })
+      // If the response is OK, return the JSON data Else return error
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -37,9 +45,10 @@ document.querySelector("#btn-login").onclick = (e) => {
         }
       })
       .then((userLogged) => {
-        console.log(userLogged);
         if (userLogged === undefined) {
           return;
+
+          // If the user is logged in call the function
         } else {
           validateUser(userLogged);
         }
@@ -50,8 +59,11 @@ document.querySelector("#btn-login").onclick = (e) => {
   }
 };
 
+// Function to validate the logged in user and redirect to the index page
 function validateUser(userLogged) {
   const userId = userLogged.userId;
+
+  // Storage of the user token
   if (userId !== undefined) {
     localStorage.setItem("token", userLogged.token);
     localStorage.setItem("userId", userLogged.userId);
