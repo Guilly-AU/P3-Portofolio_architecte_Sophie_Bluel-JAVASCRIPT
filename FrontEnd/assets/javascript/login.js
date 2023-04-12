@@ -1,14 +1,16 @@
 document.querySelector("#btn-login").onclick = (e) => {
   e.preventDefault();
-  const emailAddress = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const emailCheck = document.getElementById("email");
-  const passwordCheck = document.getElementById("password");
+
+  const error = document.querySelector("#error");
+  const emailAddress = document.querySelector("#email").value;
+  const password = document.querySelector("#password").value;
   const user = {
     email: emailAddress,
     password: password,
   };
 
+  const emailCheck = document.getElementById("email");
+  const passwordCheck = document.getElementById("password");
   passwordCheck.reportValidity();
   emailCheck.reportValidity();
 
@@ -29,29 +31,30 @@ document.querySelector("#btn-login").onclick = (e) => {
         if (res.ok) {
           return res.json();
         } else if (res.status === 404) {
-          document.getElementById("error").innerHTML =
-            "Erreur dans l'identifiant";
+          error.innerHTML = "Erreur dans l'identifiant";
         } else if (res.status === 401) {
-          document.getElementById("error").innerHTML =
-            "Erreur dans le mot de passe";
+          error.innerHTML = "Erreur dans le mot de passe";
         }
       })
-      .then((UserLogged) => {
-        console.log(UserLogged);
-        if (UserLogged === undefined) {
+      .then((userLogged) => {
+        console.log(userLogged);
+        if (userLogged === undefined) {
           return;
         } else {
-          validateUser(UserLogged);
+          validateUser(userLogged);
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 };
 
-function validateUser(UserLogged) {
-  const userId = UserLogged.userId;
+function validateUser(userLogged) {
+  const userId = userLogged.userId;
   if (userId !== undefined) {
-    localStorage.setItem("token", UserLogged.token);
-    localStorage.setItem("userId", UserLogged.userId);
+    localStorage.setItem("token", userLogged.token);
+    localStorage.setItem("userId", userLogged.userId);
     document.location.href = "./index.html";
   } else {
   }

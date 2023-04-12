@@ -1,18 +1,18 @@
 // var works = [];
 const token = localStorage.getItem("token");
 const filters = document.querySelector(".filters");
-const login = document.getElementById("login");
+const btnLogin = document.getElementById("login");
 
 fetch("http://localhost:5678/api/works")
   .then((res) => res.json())
   .then((result) => {
     works = result;
     if (token) {
-      login.innerHTML = "logout";
-      login.addEventListener("click", function () {
+      btnLogin.innerHTML = "logout";
+      btnLogin.addEventListener("click", function () {
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
-        login.setAttribute("href", "index.html");
+        btnLogin.setAttribute("href", "index.html");
       });
       createArticle(result);
       blackBar();

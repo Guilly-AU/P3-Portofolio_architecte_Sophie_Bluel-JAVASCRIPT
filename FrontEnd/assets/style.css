@@ -146,8 +146,8 @@ a:hover {
 
 .gallery img {
 	width: 100%;
-
 }
+
 #login, #contact {
 	width: 50%;
 	margin: auto;
@@ -178,6 +178,14 @@ a:hover {
 #login textarea, #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login-bold {
+	font-weight: bold;
+}
+
+.mdp-link {
+	text-decoration: underline;
 }
 
 input[type="submit"]{
@@ -447,3 +455,5 @@ footer nav ul {
 	height: 180px;
 	object-fit: contain;
   }
+
+ 
