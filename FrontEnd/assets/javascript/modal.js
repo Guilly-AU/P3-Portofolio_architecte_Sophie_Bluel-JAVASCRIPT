@@ -1,46 +1,44 @@
-let modalLink = document.querySelector('.js-modal')
-let modal = document.querySelector('.modal')
-let navModal = document.querySelector('.nav-modal')
-let titleModal = document.querySelector('#title-modal')
-let container = document.querySelector('.container')
-let btnReturn = document.querySelector('.modal-return')
-let btnClose = document.querySelector('.modal-close')
-let btnAddPhoto = document.querySelector('.btn-add-photo')
-let btnValid = document.querySelector('.btn-valid')
-let btnDeleteAll = document.querySelector('.btn-delete-all')
+const modalLink = document.querySelector('.js-modal');
+const modal = document.querySelector('.modal');
+const navModal = document.querySelector('.nav-modal');
+const titleModal = document.querySelector('#title-modal');
+const container = document.querySelector('.container');
+const btnReturn = document.querySelector('.modal-return');
+const btnClose = document.querySelector('.modal-close');
+const btnAddPhoto = document.querySelector('.btn-add-photo');
+const btnValid = document.querySelector('.btn-valid');
+const btnDeleteAll = document.querySelector('.btn-delete-all');
 
 modalLink.onclick = function () {
-    modal.style.display = null
-}
+    modal.style.display = null;
+};
 
 btnClose.onclick = function () {
-    modal.style.display = "none"
-}
+    modal.style.display = "none";
+};
 
 btnAddPhoto.onclick = function () {
-    createAddPhotoModal()
-}
+    createAddPhotoModal();
+};
+
+btnReturn.onclick = function () {
+    container.innerHTML = "";
+    createGalerieWork();
+};
+
+btnValid.addEventListener('click', addWork);
 
 window.onclick = function (e) {
     if (e.target == modal) {
         modal.style.display = "none";
     }
-}
-
-btnReturn.onclick = function () {
-    fetch("http://localhost:5678/api/works")
-        .then((res) => res.json())
-        .then((result) => {
-            container.innerHTML = ""
-            createGalerieWork(result)
-        })
-}
+};
 
 window.addEventListener('keydown', function (e) {
     if (e.key === "Escape" || e.key === "Esc")  {
-        modal.style.display = "none"
+        modal.style.display = "none";
     }
-})
+});
 
 function createGalerieModal() {
     container.style.display = 'grid';
@@ -48,14 +46,14 @@ function createGalerieModal() {
     btnAddPhoto.value = 'Ajouter photo';
     btnValid.style.display ='none';
     btnReturn.style.display = 'none';
-    navModal.style.justifyContent = 'end'
+    navModal.style.justifyContent = 'end';
     btnDeleteAll.style.display = 'block';
-    btnAddPhoto.style.display = 'block'    
-}
+    btnAddPhoto.style.display = 'block' 
+};
 
-function createGalerieWork(result) {
+function createGalerieWork() {
     createGalerieModal ()
-    result.forEach(article => {
+    works.forEach(article => {
         let articleElement = document.createElement("figure");
         articleElement.setAttribute("class", "works");
         articleElement.dataset.id = article.id;
@@ -63,14 +61,14 @@ function createGalerieWork(result) {
         imageElement.src = article.imageUrl;
         let editElement = document.createElement("p");
         editElement.innerText = 'éditer';
-        let flexButton = document.createElement('div')
-        flexButton.classList.add('flex-button')
-        let btnDelete = document.createElement('button')
-        btnDelete.classList.add('btn-delete')
-        btnDelete.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
-        let btnExtend = document.createElement('button')
-        btnExtend.classList.add('btn-extend')
-        btnExtend.innerHTML = '<i class="fa-solid fa-up-down-left-right"></i>'
+        let flexButton = document.createElement('div');
+        flexButton.classList.add('flex-button');
+        let btnDelete = document.createElement('button');
+        btnDelete.classList.add('btn-delete');
+        btnDelete.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+        let btnExtend = document.createElement('button');
+        btnExtend.classList.add('btn-extend');
+        btnExtend.innerHTML = '<i class="fa-solid fa-up-down-left-right"></i>';
 
         articleElement.addEventListener('mouseenter', () => {
             btnExtend.style.opacity = '1';
@@ -82,16 +80,16 @@ function createGalerieWork(result) {
 
         btnDelete.addEventListener('click', () => {
             deleteWork(article.id);            
-        })
+        });
 
         articleElement.append(flexButton);
-        flexButton.append(btnExtend)
-        flexButton.append(btnDelete)
+        flexButton.append(btnExtend);
+        flexButton.append(btnDelete);
         articleElement.append(imageElement);
         articleElement.append(editElement);
         container.append(articleElement);
         });
-}
+};
 
 function deleteWork(id) {
     fetch(`http://localhost:5678/api/works/${id}`, {
@@ -103,6 +101,10 @@ function deleteWork(id) {
     .then(response => {
         if(response.ok) {
             alert('suprimer');
+        } else if (response.status === 401) {
+            alert("Vous n'êtes pas authorisé à modifier le contenu");
+        } else if (response.status === 500) {
+            alert("Problème avec le serveur");
         } else {
             alert(`erreur: ${response.status}`);
         }
@@ -110,9 +112,10 @@ function deleteWork(id) {
     .catch(error => {
         alert(`erreur lors de la suppression: ${error}`);
     });
-}
+};
 
 function createAddPhotoModal() {
+    createCategory()
     container.style.display = 'flex';
     container.style.flexDirection = 'column';
     titleModal.textContent = 'Ajout Photo';
@@ -123,11 +126,14 @@ function createAddPhotoModal() {
     navModal.style.justifyContent = 'space-between';
     container.innerHTML = `
     <form action="#" method="post">
+    <div class="photo-preview">
+    </div>
     <div class="upload-container">
         <i class="fa-regular fa-image"></i>
     <div class="upload-image">
-      <button class="btn-upload">+ Ajouter photo</button>
-      <input type="file" name="upfile" id="upload-photo" onchange="displayPhoto()"/>
+        <button class="btn-upload">+ Ajouter photo</button>
+        <input type="file" name="upfile" id="upload-photo" onchange="displayPhoto()"/
+            accept=".jpg, .png">
     </div>
         <p>jpg, png: 4mo max</p>
     </div>
@@ -135,32 +141,76 @@ function createAddPhotoModal() {
     <input type="text" name="title" id="title">
     <label for="category">Catégorie</label>
     <select name="category" id="category">
-        <option value =""></option>
-        <option id="choice1" value="choice1">Objets</option>
-		<option id="choice2" value="choice2">Appartements</option>
-        <option id="choice3" value="choice3">Hotels & restaurants</option>
     </form>`; 
 }
 
 function displayPhoto () {
     const file = document.querySelector('#upload-photo').files[0];
-    const photoPreview = document.querySelector('.upload-container')
-
+    const photoWrapper = document.querySelector('.upload-container');
+    const photoPreview = document.querySelector('.photo-preview');
     if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
             const img = document.createElement('img');
+            img.setAttribute('class', 'uploaded');
             img.src = event.currentTarget.result;
-            photoPreview.innerHTML = "";
+            photoWrapper.style.display = 'none';
             photoPreview.append(img);
         }
         reader.readAsDataURL(file);
     }
 }
 
-function createCategory () {
+function createCategory() {
+    fetch('http://localhost:5678/api/categories')
+        .then((res) => res.json())
+        .then((result) => {
+            console.table(result);
+            let categoryselect = document.querySelector('#category');
+            result.forEach(category => {
+                let newOption = document.createElement('option');
+                newOption.value = category.id;
+                newOption.innerHTML = category.name;
+                categoryselect.append(newOption);
+            })
+        })
 }
 
-function addWork () {
+function addWork() {
+    const uploaded = document.querySelector('#upload-photo').files[0];
+    const title = document.querySelector('#title').value;
+    const category = document.querySelector('#category').value;
+    const formData = new FormData();
+    formData.append('image', uploaded);
+    formData.append('title', title);
+    formData.append('category', category);
+
+    console.log(uploaded);
+    console.log(category);
+    console.log(title);
     
+    fetch("http://localhost:5678/api/works", {
+        method: 'post',
+        body: formData,
+        headers: {
+            // 'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `bearer ${localStorage.token}`,
+        }
+    })
+    .then(response => {
+        if(response.ok) {
+            alert('photo ajouter');
+        } else if(response.status === 400) {
+            alert(`formulaire incomplet`);
+        } else if(response.status === 401) {
+            alert(`utilisateur non authoriser`);
+        } else if(response.status === 500) {
+            alert(`error inattendue`);
+        } else {
+            alert(`erreur: ${response.status}`);
+        }
+    })
+    .then(data => console.log(data))
+    .catch(error => console.log(error));
 }

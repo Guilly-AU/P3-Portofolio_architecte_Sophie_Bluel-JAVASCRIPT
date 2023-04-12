@@ -1,3 +1,4 @@
+// var works = [];
 const token = localStorage.getItem('token');
 const filters = document.querySelector(".filters");
 const login = document.getElementById("login");
@@ -5,6 +6,7 @@ const login = document.getElementById("login");
 fetch("http://localhost:5678/api/works")
 .then((res) => res.json())
 .then((result) => {
+    works = result;
     if (token) {
         login.innerHTML = "logout";
         login.addEventListener("click", function() {
@@ -16,7 +18,7 @@ fetch("http://localhost:5678/api/works")
         blackBar();
         editPhoto();
         modaleLink();
-        createGalerieWork(result);
+        createGalerieWork();
     } else {
         createArticle(result);
         createButton('Tous', 'btn-all');
@@ -34,7 +36,6 @@ fetch("http://localhost:5678/api/works")
     document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
     console.log("error 404, api not responding:" + err);
 });
-    
 
 function createArticle(result) {
     let sectionArticle = document.querySelector(".gallery");
