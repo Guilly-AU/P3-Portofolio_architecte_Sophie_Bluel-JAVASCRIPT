@@ -1,3 +1,4 @@
+// Handle the login click event
 document.querySelector("#btn-login").onclick = (e) => {
   e.preventDefault();
 
@@ -7,12 +8,13 @@ document.querySelector("#btn-login").onclick = (e) => {
   // Get the informations of the user and create a user object
   const emailAddress = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
+  // Create a user object
   const user = {
     email: emailAddress,
     password: password,
   };
 
-  // Check the validity of email and password
+  // Check the validity of the email and password inout
   const emailCheck = document.getElementById("email");
   const passwordCheck = document.getElementById("password");
   passwordCheck.reportValidity();
@@ -25,7 +27,7 @@ document.querySelector("#btn-login").onclick = (e) => {
   ) {
     return;
 
-    // If both email and password are valid send a POST
+    // If both email and password are valid send a POST request to the API
   } else {
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
@@ -53,8 +55,8 @@ document.querySelector("#btn-login").onclick = (e) => {
           validateUser(userLogged);
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        alert("erreur 404, problème avec le serveur:" + err);
       });
   }
 };

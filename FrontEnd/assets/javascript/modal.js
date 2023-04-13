@@ -125,8 +125,8 @@ function deleteWork(id) {
         alert(`erreur: ${response.status}`);
       }
     })
-    .catch((error) => {
-      alert(`erreur lors de la suppression: ${error}`);
+    .catch((err) => {
+      alert("erreur 404, problème avec le serveur:" + err);
     });
 }
 
@@ -139,7 +139,6 @@ function createAddPhotoModal() {
   btnReturn.style.display = "block";
   btnDeleteAll.style.display = "none";
   btnValid.style.display = "block";
-  btnValid.style.backgroundColor = "grey";
   btnAddPhoto.style.display = "none";
   navModal.style.justifyContent = "space-between";
   // Create the form for add the new project
@@ -194,6 +193,9 @@ function createCategory() {
         newOption.innerHTML = category.name;
         categoryselect.append(newOption);
       });
+    })
+    .catch((err) => {
+      alert("erreur 404, problème avec le serveur:" + err);
     });
 }
 
@@ -235,7 +237,6 @@ function addWork() {
           alert(`erreur: ${response.status}`);
         }
       })
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
+      .catch((error) => alert(error));
   }
 }

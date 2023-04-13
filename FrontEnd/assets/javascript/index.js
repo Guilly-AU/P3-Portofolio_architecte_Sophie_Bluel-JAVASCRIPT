@@ -38,8 +38,7 @@ fetch("http://localhost:5678/api/works")
     }
   })
   .catch((err) => {
-    document.querySelector("header").innerHTML = "<h1>erreur 404</h1>";
-    console.log("error 404, api not responding:" + err);
+    alert("erreur 404, problème avec le serveur:" + err);
   });
 
 // Function to create an article element and display to the Gallery
@@ -59,7 +58,7 @@ function createArticle(result) {
   });
 }
 
-// Function to create a filter button
+// Function to create the filters button
 function createButton(text, className) {
   const button = document.createElement("button");
   button.type = "button";
