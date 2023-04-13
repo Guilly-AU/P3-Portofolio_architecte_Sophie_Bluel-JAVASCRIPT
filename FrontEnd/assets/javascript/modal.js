@@ -9,6 +9,11 @@ const btnAddPhoto = document.querySelector(".btn-add-photo");
 const btnValid = document.querySelector(".btn-valid");
 const btnDeleteAll = document.querySelector(".btn-delete-all");
 
+//Prevent submistion of the form
+container.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
+
 // Function for open the modal
 modalLink.onclick = function () {
   modal.style.display = null;
@@ -139,6 +144,8 @@ function createAddPhotoModal() {
   btnReturn.style.display = "block";
   btnDeleteAll.style.display = "none";
   btnValid.style.display = "block";
+  btnValid.removeEventListener("click", addWork);
+  btnValid.style.backgroundColor = "grey";
   btnAddPhoto.style.display = "none";
   navModal.style.justifyContent = "space-between";
   // Create the form for add the new project
@@ -164,19 +171,31 @@ function createAddPhotoModal() {
 
 // Function to display a preview of the photo uploaded
 function displayPhoto() {
-  const file = document.querySelector("#upload-photo").files[0];
+  const picture = document.querySelector("#upload-photo").files[0];
   const photoWrapper = document.querySelector(".upload-container");
   const photoPreview = document.querySelector(".photo-preview");
-  if (file) {
+
+  if (picture.type !== "image/jpeg" && picture.type !== "image/png") {
+    alert("Le fichier doit être au format JPG ou PNG");
+    return;
+  }
+
+  if (picture.size > 4194304) {
+    alert("Verifiez la taille du fichier");
+    return;
+  }
+
+  if (picture) {
     const reader = new FileReader();
-    reader.onload = function (event) {
+    reader.onload = function (e) {
       const img = document.createElement("img");
       img.setAttribute("class", "uploaded");
-      img.src = event.currentTarget.result;
+      img.src = e.currentTarget.result;
       photoWrapper.style.display = "none";
       photoPreview.append(img);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(picture);
+    checkInputForm();
   }
 }
 
@@ -199,44 +218,59 @@ function createCategory() {
     });
 }
 
+// Function to check if the form is complet, IF complete allow the user to send the form to the API
+function checkInputForm() {
+  const picture = document.querySelector("#upload-photo").files[0];
+  const title = document.querySelector("#title").value;
+
+  const fileCheck = picture;
+  const titleCheck = title.length > 0;
+
+  const isComplete = fileCheck && titleCheck;
+
+  btnValid.style.backgroundColor = isComplete ? "#1D6154" : "grey";
+
+  if (isComplete) {
+    btnValid.addEventListener("click", addWork);
+  } else {
+    btnValid.removeEventListener("click", addWork);
+  }
+}
+
 // Function to add the new project from the form
 function addWork() {
-  const uploaded = document.querySelector("#upload-photo").files[0];
+  const picture = document.querySelector("#upload-photo").files[0];
   const title = document.querySelector("#title").value;
   const category = document.querySelector("#category").value;
   // Create a form data for the API
   const formData = new FormData();
-  formData.append("image", uploaded);
+  formData.append("image", picture);
   formData.append("title", title);
   formData.append("category", category);
   // Check if all the input are filled
-  if (!uploaded || !title || !category) {
-    alert("Veuillez remplir tous les champs");
-    return;
-  } else {
-    // Send the form data with POST with the token
-    fetch("http://localhost:5678/api/works", {
-      method: "post",
-      body: formData,
-      headers: {
-        Accept: "application/json",
-        Authorization: `bearer ${localStorage.token}`,
-      },
+  checkInputForm();
+  // Send the form data with POST with the token
+  fetch("http://localhost:5678/api/works", {
+    method: "post",
+    body: formData,
+    headers: {
+      Accept: "application/json",
+      Authorization: `bearer ${localStorage.token}`,
+    },
+  })
+    // API response management
+    .then((response) => {
+      if (response.ok) {
+        alert("Projet ajouté");
+      } else if (response.status === 400) {
+        alert("Formulaire incomplet");
+      } else if (response.status === 401) {
+        alert("utilisateur non authoriser");
+      } else if (response.status === 500) {
+        alert("erreur inattendue");
+      } else {
+        alert(`erreur: ${response.status}`);
+      }
     })
-      // API response management
-      .then((response) => {
-        if (response.ok) {
-          alert("Projet ajouté");
-        } else if (response.status === 400) {
-          alert("Formulaire incomplet");
-        } else if (response.status === 401) {
-          alert("utilisateur non authoriser");
-        } else if (response.status === 500) {
-          alert("erreur inattendue");
-        } else {
-          alert(`erreur: ${response.status}`);
-        }
-      })
-      .catch((error) => alert(error));
-  }
+    .catch((error) => alert(error));
 }
