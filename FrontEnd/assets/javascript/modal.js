@@ -167,6 +167,9 @@ function createAddPhotoModal() {
     <label for="category">Catégorie</label>
     <select name="category" id="category">
     </form>`;
+  // Check if the form is complete
+  const title = document.querySelector("#title");
+  title.addEventListener("input", checkInputForm);
 }
 
 // Function to display a preview of the photo uploaded
@@ -247,8 +250,6 @@ function addWork() {
   formData.append("image", picture);
   formData.append("title", title);
   formData.append("category", category);
-  // Check if all the input are filled
-  checkInputForm();
   // Send the form data with POST with the token
   fetch("http://localhost:5678/api/works", {
     method: "post",
