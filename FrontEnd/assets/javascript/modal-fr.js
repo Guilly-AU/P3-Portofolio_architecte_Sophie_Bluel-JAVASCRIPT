@@ -55,8 +55,8 @@ window.addEventListener("keydown", function (e) {
 // Function to create the gallery modal
 function createGalerieModal() {
   container.style.display = "grid";
-  titleModal.textContent = "Photo gallery";
-  btnAddPhoto.value = "Add photo";
+  titleModal.textContent = "Galerie photo";
+  btnAddPhoto.value = "Ajouter photo";
   btnValid.style.display = "none";
   btnReturn.style.display = "none";
   navModal.style.justifyContent = "end";
@@ -74,7 +74,7 @@ function createGalerieWork() {
     let imageElement = document.createElement("img");
     imageElement.src = article.imageUrl;
     let editElement = document.createElement("p");
-    editElement.innerText = "Edit";
+    editElement.innerText = "éditer";
     let flexButton = document.createElement("div");
     flexButton.classList.add("flex-button");
     // Create of the button to delete work
@@ -94,7 +94,7 @@ function createGalerieWork() {
 
     // Confirmation before delete works
     btnDelete.addEventListener("click", () => {
-      if (confirm("Do you want to delete?")) {
+      if (confirm("voulez-vous supprimmer?")) {
         deleteWork(article.id);
       } else {
         return;
@@ -121,17 +121,17 @@ function deleteWork(id) {
     // API response management
     .then((response) => {
       if (response.ok) {
-        alert("Project deleted");
+        alert("Projet suprimé");
       } else if (response.status === 401) {
-        alert("You are not authorized to edit the content.");
+        alert("Vous n'êtes pas autorisé à modifier le contenu");
       } else if (response.status === 500) {
-        alert("Server problem");
+        alert("Problème avec le serveur");
       } else {
-        alert(`Error: ${response.status}`);
+        alert(`erreur: ${response.status}`);
       }
     })
     .catch((err) => {
-      alert("Error 404, server problem:" + err);
+      alert("erreur 404, problème avec le serveur:" + err);
     });
 }
 
@@ -140,7 +140,7 @@ function createAddPhotoModal() {
   createCategory();
   container.style.display = "flex";
   container.style.flexDirection = "column";
-  titleModal.textContent = "Add Photo";
+  titleModal.textContent = "Ajout Photo";
   btnReturn.style.display = "block";
   btnDeleteAll.style.display = "none";
   btnValid.style.display = "block";
@@ -156,15 +156,15 @@ function createAddPhotoModal() {
     <div class="upload-container">
         <i class="fa-regular fa-image"></i>
     <div class="upload-image">
-        <button class="btn-upload">+ Add photo</button>
+        <button class="btn-upload">+ Ajouter photo</button>
         <input type="file" name="upfile" id="upload-photo" onchange="displayPhoto()"/
             accept=".jpg, .png">
     </div>
         <p>jpg, png: 4mo max</p>
     </div>
-    <label for="title" name="title">Title</label>
+    <label for="title" name="title">Titre</label>
     <input type="text" name="title" id="title">
-    <label for="category">Category</label>
+    <label for="category">Catégorie</label>
     <select name="category" id="category">
     </form>`;
   // Check if the form is complete
@@ -179,12 +179,12 @@ function displayPhoto() {
   const photoPreview = document.querySelector(".photo-preview");
 
   if (picture.type !== "image/jpeg" && picture.type !== "image/png") {
-    alert("The file must be in JPG or PNG format");
+    alert("Le fichier doit être au format JPG ou PNG");
     return;
   }
 
   if (picture.size > 4194304) {
-    alert("Check the file size");
+    alert("Verifiez la taille du fichier");
     return;
   }
 
@@ -217,7 +217,7 @@ function createCategory() {
       });
     })
     .catch((err) => {
-      alert("Error 404, server problem:" + err);
+      alert("erreur 404, problème avec le serveur:" + err);
     });
 }
 
@@ -262,15 +262,15 @@ function addWork() {
     // API response management
     .then((response) => {
       if (response.ok) {
-        alert("Project added");
+        alert("Projet ajouté");
       } else if (response.status === 400) {
-        alert("Incomplete form");
+        alert("Formulaire incomplet");
       } else if (response.status === 401) {
-        alert("Unauthorized user");
+        alert("utilisateur non authoriser");
       } else if (response.status === 500) {
-        alert("Unexpected error");
+        alert("erreur inattendue");
       } else {
-        alert(`error: ${response.status}`);
+        alert(`erreur: ${response.status}`);
       }
     })
     .catch((error) => alert(error));

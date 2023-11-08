@@ -41,9 +41,9 @@ document.querySelector("#btn-login").onclick = (e) => {
         if (res.ok) {
           return res.json();
         } else if (res.status === 404) {
-          error.innerHTML = "Error in the identifier";
+          error.innerHTML = "Erreur dans l'identifiant";
         } else if (res.status === 401) {
-          error.innerHTML = "Error in the password";
+          error.innerHTML = "Erreur dans le mot de passe";
         }
       })
       .then((userLogged) => {
@@ -56,7 +56,7 @@ document.querySelector("#btn-login").onclick = (e) => {
         }
       })
       .catch((err) => {
-        alert("Error 404, server problem:" + err);
+        alert("erreur 404, problème avec le serveur:" + err);
       });
   }
 };

@@ -26,10 +26,10 @@ fetch("http://localhost:5678/api/works")
     } else {
       // If their is no token, only display the filters and the gallery
       createArticle(result);
-      createButton("All", "btn-all");
-      createButton("Objects", "btn-objects");
-      createButton("Apartments", "btn-apartments");
-      createButton(`Hotels & restaurants`, "btn-hotels");
+      createButton("Tous", "btn-all");
+      createButton("Objets", "btn-objects");
+      createButton("Appartements", "btn-apartments");
+      createButton(`Hôtels & restaurants`, "btn-hotels");
       filtersAll(result);
       filterObjets(result);
       filterApartments(result);
@@ -38,7 +38,7 @@ fetch("http://localhost:5678/api/works")
     }
   })
   .catch((err) => {
-    alert("Error 404, problem with the server" + err);
+    alert("erreur 404, problème avec le serveur:" + err);
   });
 
 // Function to create an article element and display to the Gallery
@@ -115,10 +115,10 @@ function blackBar() {
   let icon = document.createElement("i");
   icon.classList.add("fa-regular", "fa-pen-to-square");
   let h3 = document.createElement("h3");
-  h3.innerHTML = "Edit mode";
+  h3.innerHTML = "Mode édition";
   let link = document.createElement("a");
   link.setAttribute("href", "#");
-  link.textContent = "Publish the changes";
+  link.textContent = "publier les changements";
 
   blackBar.parentNode.insertBefore(sectionMode, blackBar);
   sectionMode.append(icon);
@@ -139,7 +139,7 @@ function editPhoto() {
   icon.classList.add("fa-regular", "fa-pen-to-square");
   let link = document.createElement("a");
   link.setAttribute("href", "#");
-  link.textContent = "Edit";
+  link.textContent = "modifier";
   editPhoto.append(icon);
   editPhoto.append(link);
 }
