@@ -1,4 +1,4 @@
-# P7 - Develop the back-end of a book rating site
+# P3 - Create a dynamic web page with JavaScript
 
 For this educational project, in my role as a front-end developer, I was tasked with creating the front-end of the website. Specifically, I focused on developing the work presentation page, building the administrator login page from scratch, and integrating the modal for uploading new works, all starting from the ground up.
 
