@@ -16,8 +16,8 @@ The project constraints dictated the use of vanilla JavaScript for dynamically r
 [3]: https://www.w3schools.com/js/
 
 # Main objectives
-• Handle user events with JavaScript/
-• Manipulate DOM elements with JavaScript/
+• Handle user events with JavaScript\
+• Manipulate DOM elements with JavaScript\
 • Retrieve user data in JavaScript via forms
 
 # How to launch the project with npm
